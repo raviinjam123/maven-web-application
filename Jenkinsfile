@@ -2,6 +2,11 @@ node
 {
     def mavenhome = tool name : "maven 3.6.3"
     
+    echo "Github branch name ${env.BRANCH_NAME}"
+    echo "jenkins Home dir ${env.JENKINS_HOME}"
+    echo "jenkins Job no ${env.BUILD_NUMBER}"
+     echo "Job name ${env.JOB_NAME}"
+    
     properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
     
     stage('code checkout')
