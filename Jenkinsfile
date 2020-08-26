@@ -1,54 +1,48 @@
 node
- {
-  
-  def mavenHome = tool name: "maven3.6.3"
-  
-      echo "GitHub BranhName ${env.BRANCH_NAME}"
-      echo "Jenkins Job Number ${env.BUILD_NUMBER}"
-      echo "Jenkins Node Name ${env.NODE_NAME}"
-  
-      echo "Jenkins Home ${env.JENKINS_HOME}"
-      echo "Jenkins URL ${env.JENKINS_URL}"
-      echo "JOB Name ${env.JOB_NAME}"
-  
-   properties([[$class: 'JiraProjectProperty'], buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '2', daysToKeepStr: '', numToKeepStr: '2')), pipelineTriggers([pollSCM('* * * * *')])])
-  
-  stage("CheckOutCodeGit")
-  {
-   git branch: 'development', credentialsId: '65fb834f-a83b-4fe7-8e11-686245c47a65', url: 'https://github.com/MithunTechnologiesDevOps/maven-web-application.git'
- }
- 
- stage("Build")
- {
- sh "${mavenHome}/bin/mvn clean package"
- }
- 
-  /*
- stage("ExecuteSonarQubeReport")
- {
- sh "${mavenHome}/bin/mvn sonar:sonar"
- }
- 
- stage("UploadArtifactsintoNexus")
- {
- sh "${mavenHome}/bin/mvn deploy"
- }
- 
-  stage("DeployAppTomcat")
- {
-  sshagent(['423b5b58-c0a3-42aa-af6e-f0affe1bad0c']) {
-    sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war  ec2-user@15.206.91.239:/opt/apache-tomcat-9.0.34/webapps/" 
-  }
- }
- 
- stage('EmailNotification')
- {
- mail bcc: 'devopstrainingblr@gmail.com', body: '''Build is over
-
- Thanks,
- Mithun Technologies,
- 9980923226.''', cc: 'devopstrainingblr@gmail.com', from: '', replyTo: '', subject: 'Build is over!!', to: 'devopstrainingblr@gmail.com'
- }
- */
- 
- }
+{
+    def mavenhome = tool name : "maven 3.6.3"
+    
+    echo "Github branch name ${env.BRANCH_NAME}"
+    echo "jenkins Home dir ${env.JENKINS_HOME}"
+    echo "jenkins Job no ${env.BUILD_NUMBER}"
+     echo "Job name ${env.JOB_NAME}"
+    
+    properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
+    
+    stage('code checkout')
+    {
+        git branch: 'development', credentialsId: '9d9307a7-db79-4c9a-a5cb-8873f68daca8', url: 'https://github.com/Muni-Prathap/maven-web-application.git'
+    }
+    
+    stage('Build')
+    {
+        sh "${mavenhome}/bin/mvn clean package"
+    }
+  /*  
+    stage('execute Sonar Report')
+    {
+        sh "${mavenhome}/bin/mvn sonar:sonar"
+    }
+    
+    stage('upload Artifact in Nexus')
+    {
+        sh "${mavenhome}/bin/mvn deploy"
+    }
+    
+    stage('deploye to Tomcat')
+    {
+        sshagent(['e182c041-d635-4a41-bd54-8d16624eacfa']) {
+    
+    sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.127.17.189://opt/apache-tomcat-9.0.37/webapps"
+    
+       }
+    }
+    
+    stage('email Notification')
+    {
+        emailext body: '''Build Is Over
+    Regards
+    muni.''', subject: 'Build Is Over', to: 'munipratapmech@gmail.com'
+    }
+    */
+}
