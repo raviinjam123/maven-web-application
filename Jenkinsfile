@@ -18,7 +18,7 @@ node
     {
         sh "${mavenhome}/bin/mvn clean package"
     }
-    
+  /*  
     stage('execute Sonar Report')
     {
         sh "${mavenhome}/bin/mvn sonar:sonar"
@@ -45,4 +45,5 @@ node
     Regards
     muni.''', subject: 'Build Is Over', to: 'munipratapmech@gmail.com'
     }
+    */
 }
