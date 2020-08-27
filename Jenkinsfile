@@ -16,7 +16,7 @@ node
     
     stage('build')
     {
-        sh "${mavenHome}/bin/mvn clean package"
+        sh "${mavenhome}/bin/mvn clean package"
     }
     
     stage('DeploytoTomcat')
