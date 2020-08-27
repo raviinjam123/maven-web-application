@@ -1,6 +1,6 @@
 node
 {
-    def mavenhome = tool name : "maven 3.6.3"
+    def mavenhome = tool name : "maven-3.6.3"
     
     echo "Github branch name ${env.BRANCH_NAME}"
     echo "jenkins Home dir ${env.JENKINS_HOME}"
@@ -9,15 +9,21 @@ node
     
     properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
     
-    stage('code checkout')
+   stage('code checkout')
     {
-        git branch: 'development', credentialsId: '9d9307a7-db79-4c9a-a5cb-8873f68daca8', url: 'https://github.com/Muni-Prathap/maven-web-application.git'
+        git branch: 'development', credentialsId: 'c356fd57-dd8e-4076-a14c-c047c0e6624e', url: 'https://github.com/Muni-Prathap/maven-web-application.git'
     }
     
-    stage('Build')
+    stage('build')
     {
-        sh "${mavenhome}/bin/mvn clean package"
+        sh "${mavenHome}/bin/mvn clean package"
     }
+    
+    stage('DeploytoTomcat')
+    {
+        deploy adapters: [tomcat9(credentialsId: '760ff8d3-5bd6-42ed-9736-b151969a0fc4', path: '', url: 'http://13.235.31.5:9980/')], contextPath: null, war: '**/*.war'
+    }
+
   /*  
     stage('execute Sonar Report')
     {
