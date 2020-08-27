@@ -22,7 +22,7 @@ node
     stage('DeploytoTomcat')
     {
         deploy adapters: [tomcat9(credentialsId: '760ff8d3-5bd6-42ed-9736-b151969a0fc4', path: '', url: 'http://13.235.31.5:9980/')], contextPath: null, war: '**/*.war'
-        timeout(time: 3, unit: 'HOURS') {
+        timeout(time: 30, unit: 'SECONDS') {
         input message: 'Do you want to proceed to Deploy?'
        } 
     }
